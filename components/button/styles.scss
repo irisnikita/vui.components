@@ -1,0 +1,33 @@
+.btn {
+    height: 32px;
+    padding: 4px 15px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    color: rgba(0,0,0,.65);
+    transition: all 200ms;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.default {
+        background-color: #fff;
+
+        &:focus {
+            border: 1px solid #13c2c2;
+            color: #13c2c2;
+        }
+
+        &:hover {
+            border: 1px solid #13c2c2;
+            color: #13c2c2;
+        }
+    }
+
+    &.active {
+        &.default {
+            box-shadow: 0px 0px 5px #13c2c27a;
+        }
+    }
+}
