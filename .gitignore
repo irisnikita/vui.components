@@ -8,6 +8,9 @@ bit.json
 .bitmap
 .idea/*
 
+build/
+dist/
+
 jsconfig.json
 WSConfig.js
 yarn.lock

@@ -1,61 +1,89 @@
 // Libraries
-import React, { FunctionComponent, useState } from 'react'
-import cn from 'classnames';
-import PropTypes from 'prop-types'
+import React, {useState} from 'react';
 
-// Utils
-import { tuple } from '../_util/type';
+const cn = require('classnames');
 
-// Styles
-const styles = require('./styles.scss');
+import styles from './styles.module.scss';
 
-const ButtonTypes = tuple('default', 'primary', 'ghost', 'dashed', 'link', 'text');
-export type ButtonType = typeof ButtonTypes[number];
+export type ButtonType = 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text';
+export type SizeType = 'small' | 'middle' | 'large';
+export type ShapeType = 'circle' | 'round' | 'square';
+export type ButtonHTMLType = 'submit' | 'button' | 'reset';
 
 export interface propsButton {
+    className?: string;
     type?: ButtonType,
     onClick?: React.MouseEventHandler<HTMLElement>,
-    isActive?: Boolean,
+    isActive?: boolean,
     style?: React.CSSProperties;
+    danger?: boolean;
+    children?: React.ReactNode;
+    disable?: true;
+    icon?: React.ReactNode;
+    size?: SizeType;
+    shape?: ShapeType;
+    block?: boolean;
+    loading?: boolean;
+    href?: string;
+    htmlType?: ButtonHTMLType
 }
 
-const Button: FunctionComponent<propsButton> = (props) => {
-    // Props
-    const { type = 'default', children } = props;
-
+const Button = (props: propsButton) => {
     // State
     const [isActive, setActive] = useState(false);
 
+    // Props
+    const {type = 'default', htmlType = 'button', style = {}, danger = false, loading = false, disable = false, className = '', size = 'middle', shape = 'square', block = false} = props;
+
     const onClickButton = (e: any) => {
+
         if (props.onClick) {
-            props.onClick(e)
+            props.onClick(e);
         }
 
-        setActive(true)
+        setActive(true);
 
         setTimeout(() => {
-            setActive(false)
-        }, 500);
-    }
+            setActive(false);
+        }, 200);
+    };
 
     return (
         <button
-            className={cn(styles['btn'], styles[type], { [styles.active]: isActive })}
+            disabled={disable}
+            className={cn(
+                className,
+                styles['btn'],
+                styles[shape],
+                styles[type],
+                {
+                    [styles.active]: isActive,
+                    [styles.danger]: danger,
+                    [styles.disable]: disable,
+                    [styles['no-event']]: loading,
+                    [styles.block]: block,
+                    [styles[size]]: typeof size !== 'number'
+                }
+            )}
+            style={style}
             onClick={onClickButton}
+            type={htmlType}
         >
-            {children ? children : 'Button'}
-        </button>
-    )
-}
+            {loading ? (
+                <>
+                    <div className={styles['wrap-loading']} />
+                    <div className={`${styles.loading} icon-spinner2`} />
+                </>
+            ) : null}
+            {props.icon && !loading ? props.icon : null}
+            {props.children &&
+                <div style={{marginLeft: props.icon || props.loading ? 5 : 0, width: 'max-content'}}>
+                    {props.children}
+                </div>
+            }
+        </button >
+    );
+};
 
-Button.propTypes = {
-    onClick: PropTypes.func
-}
-
-Button.defaultProps = {
-    type: 'default',
-    style: {}
-}
-
-export default Button
+export default Button;
 
