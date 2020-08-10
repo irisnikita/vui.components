@@ -33,7 +33,18 @@ const Button = (props: propsButton) => {
     const [isActive, setActive] = useState(false);
 
     // Props
-    const {type = 'default', htmlType = 'button', style = {}, danger = false, loading = false, disable = false, className = '', size = 'middle', shape = 'square', block = false} = props;
+    const {
+        type = 'default', 
+        htmlType = 'button', 
+        style = {}, 
+        danger = false, 
+        loading = false,
+        disable = false, 
+        className = '', 
+        size = 'middle', 
+        shape = 'square', 
+        block = false
+    } = props;
 
     const onClickButton = (e: any) => {
 
